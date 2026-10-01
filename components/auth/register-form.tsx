@@ -55,7 +55,10 @@ export function RegisterForm() {
           full_name: fullName.trim(),
           business_name: businessName.trim() || fullName.trim(),
         },
-        emailRedirectTo: `${window.location.origin}/dashboard`,
+        // Must go through the /auth/callback route handler: middleware runs
+        // before client JS, so the session cookie has to be written server-side
+        // or the next navigation bounces back to /login.
+        emailRedirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent("/dashboard")}`,
       },
     });
 

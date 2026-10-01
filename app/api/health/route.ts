@@ -3,6 +3,7 @@ import { checkSchema, invalidateSchemaCache, REQUIRED_TABLES } from "@/lib/supab
 import { isSupabaseConfigured, isServiceRoleConfigured } from "@/lib/supabase/config";
 import { getPaymentEnvironment } from "@/lib/payments/env";
 import { emailStatus } from "@/lib/email";
+import { appUrl } from "@/lib/utils";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -16,6 +17,31 @@ export const dynamic = "force-dynamic";
 export async function GET() {
   const configured = isSupabaseConfigured();
   const serviceRole = isServiceRoleConfigured();
+
+  /**
+   * The app's own origin, surfaced because a misconfigured one is otherwise
+   * invisible until an emailed confirmation link lands on localhost.
+   *
+   * localhost is only a problem on Vercel — on a laptop it is the correct
+   * answer — so the failure is only raised when running as a real deployment.
+   */
+  const resolved = appUrl();
+  const source = process.env.NEXT_PUBLIC_APP_URL
+    ? "NEXT_PUBLIC_APP_URL"
+    : process.env.VERCEL_URL
+      ? "VERCEL_URL"
+      : "fallback";
+  const onVercel = Boolean(process.env.VERCEL);
+  const origin = {
+    resolved,
+    source,
+    onVercel,
+    looksLocal: resolved.includes("localhost"),
+    problem:
+      onVercel && resolved.includes("localhost")
+        ? "The app resolved its own origin to localhost on Vercel. Set NEXT_PUBLIC_APP_URL to the production domain."
+        : null,
+  };
 
   let schema: Awaited<ReturnType<typeof checkSchema>> | null = null;
   if (configured) {
@@ -42,11 +68,12 @@ export async function GET() {
     payments = null;
   }
 
-  const ready = configured && schema?.ok === true;
+  const ready = configured && schema?.ok === true && !origin.problem;
 
   return NextResponse.json(
     {
       ok: ready,
+      origin,
       supabase: { publicKey: configured, secretKey: serviceRole },
       schema: schema
         ? {

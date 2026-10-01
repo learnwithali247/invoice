@@ -22,7 +22,9 @@ export function ForgotPasswordForm() {
 
     const supabase = createClient();
     const { error: resetError } = await supabase.auth.resetPasswordForEmail(email.trim(), {
-      redirectTo: `${window.location.origin}/reset-password`,
+      // Same reason as registration: the recovery link has to be handled by a
+      // route handler so the session cookie exists before middleware runs.
+      redirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent("/reset-password")}`,
     });
 
     if (resetError) {

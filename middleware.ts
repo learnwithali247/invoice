@@ -1,7 +1,20 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 
-const PUBLIC_PATHS = ["/login", "/register", "/forgot-password", "/reset-password"];
+/**
+ * `/auth/callback` MUST stay public. It is the landing point for every link
+ * Supabase emails out, and it arrives with no session cookie — so if this route
+ * were gated, middleware would redirect to /login and throw away the `?code=`
+ * token before the handler could exchange it. The email could never be
+ * confirmed.
+ */
+const PUBLIC_PATHS = [
+  "/login",
+  "/register",
+  "/forgot-password",
+  "/reset-password",
+  "/auth/callback",
+];
 
 const AUTH_COOKIE = "sb-access-token";
 

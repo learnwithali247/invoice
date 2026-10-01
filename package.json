@@ -19,7 +19,8 @@
     "pdf:check": "node scripts/pdf-check.mjs",
     "check:secrets": "node scripts/check-secrets.mjs",
     "predeploy": "npm run check:secrets",
-    "bundle:deploy": "node scripts/make-deploy-bundle.mjs"
+    "bundle:deploy": "node scripts/make-deploy-bundle.mjs",
+    "auth:check": "node scripts/auth-flow-check.mjs"
   },
   "dependencies": {
     "@react-pdf/renderer": "^4.1.6",
