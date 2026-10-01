@@ -16,6 +16,7 @@ const config = [
       "out/**",
       "build/**",
       "scripts/**",
+      "invoice-deploy/**",
       "next-env.d.ts",
     ],
   },

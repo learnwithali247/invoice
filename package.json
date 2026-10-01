@@ -18,7 +18,8 @@
     "perf": "node scripts/perf.mjs",
     "pdf:check": "node scripts/pdf-check.mjs",
     "check:secrets": "node scripts/check-secrets.mjs",
-    "predeploy": "npm run check:secrets"
+    "predeploy": "npm run check:secrets",
+    "bundle:deploy": "node scripts/make-deploy-bundle.mjs"
   },
   "dependencies": {
     "@react-pdf/renderer": "^4.1.6",
