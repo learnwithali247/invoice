@@ -1,0 +1,51 @@
+{
+  "name": "invoice-generator",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "supabase:migrate": "node scripts/print-migration.mjs",
+    "seed": "node scripts/seed.mjs",
+    "typecheck": "tsc --noEmit",
+    "test:calc": "node --experimental-strip-types --no-warnings --import ./scripts/register-ts.mjs scripts/test-calc.ts",
+    "test:db": "node scripts/test-db.mjs",
+    "test": "npm run typecheck && npm run lint && npm run test:calc && npm run test:db",
+    "db:push": "node scripts/push-migration.mjs",
+    "sql:copy": "node scripts/copy-migration.mjs",
+    "perf": "node scripts/perf.mjs",
+    "check:secrets": "node scripts/check-secrets.mjs",
+    "predeploy": "npm run check:secrets"
+  },
+  "dependencies": {
+    "@react-pdf/renderer": "^4.1.6",
+    "@supabase/ssr": "^0.12.7",
+    "@supabase/supabase-js": "^2.47.10",
+    "clsx": "^2.1.1",
+    "decimal.js": "^10.4.3",
+    "lucide-react": "^0.469.0",
+    "next": "15.5.27",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "server-only": "^0.0.1",
+    "tailwind-merge": "^2.6.0",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.3.7",
+    "@types/node": "^22.10.2",
+    "@types/react": "^19.0.2",
+    "@types/react-dom": "^19.0.2",
+    "autoprefixer": "^10.4.20",
+    "eslint": "^9.17.0",
+    "eslint-config-next": "15.5.27",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.7.2"
+  },
+  "engines": {
+    "node": ">=20.11.0"
+  }
+}
