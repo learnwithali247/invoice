@@ -1,4 +1,5 @@
 import "server-only";
+import { appUrl } from "@/lib/utils";
 
 export type PaymentMode = "test" | "live" | "disabled";
 
@@ -34,7 +35,10 @@ export function getPaymentEnvironment(): PaymentEnvironment {
   return {
     mode,
     isTest,
-    appUrl: (process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000").replace(/\/$/, ""),
+    // Shares the same resolution as every other absolute URL in the app, so
+    // payment return URLs never point at localhost in production when
+    // NEXT_PUBLIC_APP_URL is not set (Vercel supplies VERCEL_URL).
+    appUrl: appUrl(),
     stripe: {
       secretKey: isTest
         ? pick(process.env.STRIPE_TEST_SECRET_KEY)
