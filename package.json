@@ -16,6 +16,7 @@
     "db:push": "node scripts/push-migration.mjs",
     "sql:copy": "node scripts/copy-migration.mjs",
     "perf": "node scripts/perf.mjs",
+    "pdf:check": "node scripts/pdf-check.mjs",
     "check:secrets": "node scripts/check-secrets.mjs",
     "predeploy": "npm run check:secrets"
   },
